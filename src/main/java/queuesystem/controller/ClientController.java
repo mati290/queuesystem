@@ -8,7 +8,7 @@ import queuesystem.service.ClientService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clients")
+@RequestMapping({"/clients"})
 
 public class ClientController {
 
@@ -25,7 +25,7 @@ public class ClientController {
 
     }
     @PostMapping
-    public Client addClient(@RequestBody Client client){
+    public Client addClient(@RequestBody Client client) {
         return clientService.addClient(client);
     }
 
@@ -38,6 +38,11 @@ public class ClientController {
 
     public Client updateClient(@PathVariable Long id, @RequestBody Client client){
         return clientService.updateClient(id, client);
+
+    }
+    @GetMapping("/next")
+    public Client getNextClient() {
+        return clientService.getNextClient();
     }
 }
 

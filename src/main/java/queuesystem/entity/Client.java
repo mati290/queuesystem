@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Client {
+public class Client implements Comparable<Client> {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
@@ -22,6 +22,11 @@ public class Client {
         private String email;
         private String status;
         private int priorityLevel;
+
+        @Override public int compareTo(Client other) {
+                return Integer.compare(other.priorityLevel, this.priorityLevel);
+        }
+
 
 
 }

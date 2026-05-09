@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import queuesystem.repository.ClientRepository;
 import queuesystem.entity.Client;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.regex.Pattern;
 
 
@@ -12,6 +13,8 @@ import java.util.regex.Pattern;
 
 @Service
 public class ClientService {
+
+    private final PriorityQueue<Client> clientQueue = new PriorityQueue<>();
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
@@ -27,7 +30,15 @@ public class ClientService {
 
     public Client addClient(Client client ) {
         validateClient(client);
+        Client savedClient = clientRepository.save(client);
+        clientQueue.add(client);
         return clientRepository.save(client);
+    }
+    public Client getNextClient() {
+        if (clientQueue.isEmpty()) {
+            throw new IllegalStateException("Brak klientów w kolejce");
+        }
+        return clientQueue.poll();
     }
 
     public void deleteClient(Long id) {
@@ -48,6 +59,9 @@ public class ClientService {
         client.setPriorityLevel(updateClient.getPriorityLevel());
         return clientRepository.save(client);
     }
+
+
+
 
     private void validateClient(Client client) {
         if (client == null) {
