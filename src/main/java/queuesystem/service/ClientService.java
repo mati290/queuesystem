@@ -30,7 +30,6 @@ public class ClientService {
 
     public Client addClient(Client client ) {
         validateClient(client);
-        Client savedClient = clientRepository.save(client);
         clientQueue.add(client);
         return clientRepository.save(client);
     }

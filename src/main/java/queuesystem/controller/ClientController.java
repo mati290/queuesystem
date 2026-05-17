@@ -1,6 +1,8 @@
 package queuesystem.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+import queuesystem.dto.ClientDTO;
 import queuesystem.entity.Client;
 import queuesystem.service.ClientService;
 
@@ -22,10 +24,15 @@ public class ClientController {
     @GetMapping
     public List<Client> getAllClients(){
         return clientService.getAllClients();
-
     }
+
     @PostMapping
-    public Client addClient(@RequestBody Client client) {
+    public Client addClient(@Valid @RequestBody ClientDTO clientDTO){
+        Client client = new Client();
+        client.setName(clientDTO.getName());
+        client.setEmail(clientDTO.getEmail());
+        client.setStatus(clientDTO.getStatus());
+        client.setPriorityLevel(clientDTO.getPriorityLevel());
         return clientService.addClient(client);
     }
 
@@ -36,7 +43,12 @@ public class ClientController {
 
     @PutMapping("/{id}")
 
-    public Client updateClient(@PathVariable Long id, @RequestBody Client client){
+    public Client updateClient(@PathVariable Long id, @RequestBody ClientDTO clientDTO){
+        Client client = new Client();
+        client.setName(clientDTO.getName());
+        client.setEmail(clientDTO.getEmail());
+        client.setStatus(clientDTO.getStatus());
+        client.setPriorityLevel(clientDTO.getPriorityLevel());
         return clientService.updateClient(id, client);
 
     }
